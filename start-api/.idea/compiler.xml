@@ -6,13 +6,14 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="start-api" />
+        <module name="share-user" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="start-api" options="-parameters" />
+      <module name="share-user" options="-parameters" />
+      <module name="start-api" options="" />
     </option>
   </component>
 </project>
