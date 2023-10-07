@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import top.lilong.domain.dto.LoginDTO;
 import top.lilong.domain.entity.User;
 import top.lilong.domain.service.UserService;
+import top.lilong.resp.CommonResp;
 
 /**
  * @version 1.0
@@ -18,12 +19,18 @@ public class UserController {
  @Resource
  private UserService userService;
  @GetMapping("/count")
- public Long count(){
-  return userService.count();
+ public CommonResp<Long> count(){
+  Long count = userService.count();
+  CommonResp<Long> commonResp = new CommonResp<>();
+  commonResp.setData(count);
+  return commonResp;
  }
 
  @PostMapping("/login")
- public User login(@RequestBody LoginDTO loginDTO){
-  return  userService.login(loginDTO);
+ public CommonResp<User> login(@RequestBody LoginDTO loginDTO){
+  User login = userService.login(loginDTO);
+  CommonResp<User> commonResp = new CommonResp<>();
+  commonResp.setData(login);
+  return  commonResp;
  }
 }
