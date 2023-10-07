@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import top.lilong.exception.BussinessExcepton;
 import top.lilong.resp.CommonResp;
 
 /**
@@ -15,7 +16,7 @@ import top.lilong.resp.CommonResp;
 @ControllerAdvice
 @Slf4j
 public class ControllerExceptionHandler {
- @ExceptionHandler(value = Exception.class)
+ @ExceptionHandler(value = BussinessExcepton.class)
  @ResponseBody
  public CommonResp<?> exceptionHandler(Exception e){
   CommonResp<Object> resp = new CommonResp<>();
