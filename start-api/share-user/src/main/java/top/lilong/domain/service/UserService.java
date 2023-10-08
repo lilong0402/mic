@@ -11,6 +11,7 @@ import top.lilong.domain.mapper.UserMapper;
 import top.lilong.domain.resp.UserLoginResp;
 import top.lilong.exception.BussinessExceptionEnum;
 import top.lilong.exception.BussinessExcepton;
+import top.lilong.util.JwtUtil;
 import top.lilong.util.SnowUtil;
 
 import java.util.Date;
@@ -36,9 +37,9 @@ public class UserService {
   if (!user.getPassword().equals(loginDTO.getPassword()))  throw  new BussinessExcepton(BussinessExceptionEnum.PASSWORD_ERROR);
 //   throw new RuntimeException("密码错误");
   UserLoginResp userLoginResp = UserLoginResp.builder().user(user).build();
-  String key="InfinityX7";
-  Map<String, Object> map = BeanUtil.beanToMap(userLoginResp);
-  String token = JWTUtil.createToken(map, key.getBytes());
+//  String key="InfinityX7";
+//  Map<String, Object> map = BeanUtil.beanToMap(userLoginResp);
+  String token = JwtUtil.createToken(userLoginResp.getUser().getId(),userLoginResp.getUser().getPhone());
   userLoginResp.setToken(token);
   return userLoginResp;
  }
