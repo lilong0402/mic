@@ -8,6 +8,9 @@ import top.lilong.domain.entity.User;
 import top.lilong.domain.mapper.UserMapper;
 import top.lilong.exception.BussinessExceptionEnum;
 import top.lilong.exception.BussinessExcepton;
+import top.lilong.util.SnowUtil;
+
+import java.util.Date;
 
 /**
  * @version 1.0
@@ -29,5 +32,24 @@ public class UserService {
   if (!user.getPassword().equals(loginDTO.getPassword()))  throw  new BussinessExcepton(BussinessExceptionEnum.PASSWORD_ERROR);
 //   throw new RuntimeException("密码错误");
   return user;
+ }
+ public Long register(LoginDTO loginDTO){
+  User userDB= userMapper.selectOne(new QueryWrapper<User>().lambda().eq(User::getPhone,loginDTO.getPhone()));
+  if (userDB != null){
+   throw  new BussinessExcepton(BussinessExceptionEnum.PHOME_EXIST);
+  }
+  User saveduser = User.builder()
+          .id(SnowUtil.getSnowflakeNextId())
+          .phone(loginDTO.getPhone())
+          .password(loginDTO.getPassword())
+          .nickname("新用户")
+          .roles("user")
+          .avatarUrl("https://c-ssl.dtstatic.com/uploads/blog/202201/23/20220123222213_2899a.thumb.400_0.jpeg")
+          .bonus(100)
+          .createTime(new Date())
+          .updateTime(new Date())
+          .build();
+  userMapper.insert(saveduser);
+  return saveduser.getId();
  }
 }

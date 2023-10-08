@@ -7,7 +7,7 @@ package top.lilong.exception;
  * @注释
  */
 public enum BussinessExceptionEnum {
-    PHONE_NOT_EXIST("手机号不存在"),PASSWORD_ERROR("密码错误");
+    PHONE_NOT_EXIST("手机号不存在"),PHOME_EXIST("手机号已被注册"),PASSWORD_ERROR("密码错误");
     private String desc;
     BussinessExceptionEnum(String desc){
         this.desc=desc;

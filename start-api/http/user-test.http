@@ -1,3 +1,10 @@
+POST http://localhost:8000/user-service/user/register
+Content-Type: application/json
+
+{"phone": "13951908866",
+  "password": "123123"}
+
+###
 POST http://localhost:8000/user-service/user/login
 Content-Type: application/json
 
