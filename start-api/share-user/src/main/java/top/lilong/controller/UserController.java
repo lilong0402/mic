@@ -1,6 +1,7 @@
 package top.lilong.controller;
 
 import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import top.lilong.domain.dto.LoginDTO;
 import top.lilong.domain.entity.User;
@@ -27,7 +28,7 @@ public class UserController {
  }
 
  @PostMapping("/login")
- public CommonResp<User> login(@RequestBody LoginDTO loginDTO){
+ public CommonResp<User> login(@Valid @RequestBody LoginDTO loginDTO){
   User login = userService.login(loginDTO);
   CommonResp<User> commonResp = new CommonResp<>();
   commonResp.setData(login);

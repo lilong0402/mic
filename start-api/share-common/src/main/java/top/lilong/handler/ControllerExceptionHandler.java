@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import top.lilong.exception.BussinessExcepton;
 import top.lilong.resp.CommonResp;
-
+import org.springframework.validation.BindException;
 /**
  * @version 1.0
  * @Author 李龙
@@ -16,13 +16,13 @@ import top.lilong.resp.CommonResp;
 @ControllerAdvice
 @Slf4j
 public class ControllerExceptionHandler {
- @ExceptionHandler(value = BussinessExcepton.class)
+ @ExceptionHandler(value = BindException.class)
  @ResponseBody
- public CommonResp<?> exceptionHandler(Exception e){
+ public CommonResp<?> exceptionHandler(BindException e){
   CommonResp<Object> resp = new CommonResp<>();
-  log.error("系统异常",e);
+  log.error("系统异常： {}",e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
   resp.setSuccess(false);
-  resp.setMessage(e.getMessage());
+  resp.setMessage(e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
   return resp;
  }
 }
