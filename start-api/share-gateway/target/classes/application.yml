@@ -8,3 +8,12 @@ spring:
           uri: http://127.0.0.1:8081
           predicates:
             - Path=/user-service/**
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowed-origin-patterns: '*'
+            allowed-headers: '*'
+            allowed-methods: '*'
+            allow-credentials: 'true'
+            maxAge: '3600'
+
