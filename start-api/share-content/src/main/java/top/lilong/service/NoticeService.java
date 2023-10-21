@@ -1,6 +1,12 @@
 package top.lilong.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
+import top.lilong.domain.entity.Notice;
+import top.lilong.mapper.NoticeMapper;
+
+import java.util.List;
 
 /**
  * @version 1.0

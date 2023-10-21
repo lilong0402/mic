@@ -1,5 +1,19 @@
 package top.lilong.controller;
 
+import cn.hutool.json.JSONObject;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
+import top.lilong.domain.entity.Notice;
+import top.lilong.domain.entity.Share;
+import top.lilong.resp.CommonResp;
+import top.lilong.service.NoticeService;
+import top.lilong.service.ShareService;
+import top.lilong.util.JwtUtil;
+
+import java.util.List;
+
 /**
  * @version 1.0
  * @Author 李龙
@@ -43,8 +57,8 @@ public class ShareController {
    userId = getUserFromToken(token);
   }
   CommonResp<List<Share>> commonResp = new CommonResp<>();
-  List<Share> list = shareService.getList(title, pageNo, pageSize, userId);
-  commonResp.setData(list);
+//  List<Share> list = shareService.getList(title, pageNo, pageSize, userId);
+//  commonResp.setData(list);
   return commonResp;
 
  }
@@ -63,51 +77,51 @@ public class ShareController {
   return userId;
  }
 
- @GetMapping("/{id}")
- public CommonResp<ShareResp> getShareById(@PathVariable long id) {
-  ShareResp shareResp = shareService.findById(id);
-  CommonResp<ShareResp> commonResp = new CommonResp<>();
-  commonResp.setData(shareResp);
-  return commonResp;
- }
-
- @PostMapping("/exchange")
- public CommonResp<Share> exchange(@RequestBody ExchangeDTO exchangeDTO) throws IllegalAccessException {
-  System.out.println(exchangeDTO);
-  CommonResp<Share> commonResp = new CommonResp<>();
-  commonResp.setData(shareService.exchange(exchangeDTO));
-  return commonResp;
- }
-
- @PostMapping("/contribute")
- public int contributeShare(@RequestBody ShareRequestDTO shareRequestDTO,
-                            @RequestHeader(value = "token", required = false) String token) {
-  long userId = getUserFromToken(token);
-  shareRequestDTO.setUserId(userId);
-  System.out.println(shareRequestDTO);
-  return shareService.contribute(shareRequestDTO);
- }
-
- @GetMapping("/my-contribute")
- public CommonResp<List<Share>> myContributeShare(
-         @RequestParam(required = false, defaultValue = "1") Integer pageNo,
-         @RequestParam(required = false, defaultValue = "3") Integer pageSize,
-         @RequestHeader(value = "token", required = false) String token) {
-  if (pageSize > MAX) {
-   pageSize = MAX;
-  }
-  long userId = getUserFromToken(token);
-  CommonResp<List<Share>> commonResp = new CommonResp<>();
-  commonResp.setData(shareService.myContribute(pageNo, pageSize, userId));
-  return commonResp;
- }
-
- @GetMapping("/myexchange")
- public CommonResp<List<Share>> exchangeListByUserId(@RequestHeader(value = "token", required = false) String token){
-  long userId = getUserFromToken(token);
-  List<Share> shares = shareService.exchangeListByUserId(userId);
-  CommonResp<List<Share>> commonResp = new CommonResp<>();
-  commonResp.setData(shares);
-  return commonResp;
- }
+// @GetMapping("/{id}")
+// public CommonResp<ShareResp> getShareById(@PathVariable long id) {
+//  ShareResp shareResp = shareService.findById(id);
+//  CommonResp<ShareResp> commonResp = new CommonResp<>();
+//  commonResp.setData(shareResp);
+//  return commonResp;
+// }
+//
+// @PostMapping("/exchange")
+// public CommonResp<Share> exchange(@RequestBody ExchangeDTO exchangeDTO) throws IllegalAccessException {
+//  System.out.println(exchangeDTO);
+//  CommonResp<Share> commonResp = new CommonResp<>();
+//  commonResp.setData(shareService.exchange(exchangeDTO));
+//  return commonResp;
+// }
+//
+// @PostMapping("/contribute")
+// public int contributeShare(@RequestBody ShareRequestDTO shareRequestDTO,
+//                            @RequestHeader(value = "token", required = false) String token) {
+//  long userId = getUserFromToken(token);
+//  shareRequestDTO.setUserId(userId);
+//  System.out.println(shareRequestDTO);
+//  return shareService.contribute(shareRequestDTO);
+// }
+//
+// @GetMapping("/my-contribute")
+// public CommonResp<List<Share>> myContributeShare(
+//         @RequestParam(required = false, defaultValue = "1") Integer pageNo,
+//         @RequestParam(required = false, defaultValue = "3") Integer pageSize,
+//         @RequestHeader(value = "token", required = false) String token) {
+//  if (pageSize > MAX) {
+//   pageSize = MAX;
+//  }
+//  long userId = getUserFromToken(token);
+//  CommonResp<List<Share>> commonResp = new CommonResp<>();
+//  commonResp.setData(shareService.myContribute(pageNo, pageSize, userId));
+//  return commonResp;
+// }
+//
+// @GetMapping("/myexchange")
+// public CommonResp<List<Share>> exchangeListByUserId(@RequestHeader(value = "token", required = false) String token){
+//  long userId = getUserFromToken(token);
+//  List<Share> shares = shareService.exchangeListByUserId(userId);
+//  CommonResp<List<Share>> commonResp = new CommonResp<>();
+//  commonResp.setData(shares);
+//  return commonResp;
+// }
 }
