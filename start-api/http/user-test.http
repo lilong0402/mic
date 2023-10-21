@@ -13,13 +13,15 @@ Content-Type: application/json
   "password": "123123"
 }
 
+> {%
+    client.global.set("token",response.body.data.token);
+  %}
+
 
 ###
 GET http://localhost:8000/user-service/user/count
 Accept: application/json
-eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYmYiOjE2OTc4NzU3NjMsInBob25lIjoiMTM5NTE5MDUxNzEiLCJpZCI6MSwiZXhwIjoxNjk3OTc1NzYzLCJpYXQiOjE2OTc4NzU3NjN9.Ca1tS__AaXolOKJIdUqVUGjQLZx437uM6wfxjDWFcyE
-#token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYmYiOjE2OTc4NzU1MTcsInBob25lIjoiMTM5NTE5MDUxNzEiLCJpZCI6MSwiZXhwIjoxNjk3ODc1NTI3LCJpYXQiOjE2OTc4NzU1MTd9.fa00dUVOHl-IpQNYpdL7Fun3XH0HB5XMzNiGPYU2vsk
-#token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYmYiOjE2OTc4NzUyNzIsInBob25lIjoiMTM5NTE5MDUxNzEiLCJpZCI6MSwiZXhwIjoxNjk3ODc1MjgyLCJpYXQiOjE2OTc4NzUyNzJ9.aOLcUafGRJqXdoQrDkqm2diGV6iwfTMAHf90bvl7zrM
+token: {{token}}
 
 ###
 GET http://localhost:8000/user-service/hello
