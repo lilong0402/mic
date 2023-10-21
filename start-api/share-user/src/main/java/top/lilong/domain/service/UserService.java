@@ -63,4 +63,8 @@ public class UserService {
   userMapper.insert(saveduser);
   return saveduser.getId();
  }
+
+ public User findById(Long userId){
+  return userMapper.selectById(userId);
+ }
 }
