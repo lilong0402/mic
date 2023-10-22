@@ -14,15 +14,24 @@ spring:
       discovery:
         locator:
           enabled: true
+      locator:
+        enable: true
+        lowerCaseServiceId: true
       routes:
         - id: route-user
-          uri: http://127.0.0.1:8081
+#          uri: http://127.0.0.1:8081
+          uri: lb://user-service
           predicates:
             - Path=/user-service/**
+          filters:
+            - StripPrefix=0
         - id: route-service
-          uri: http://127.0.0.1:8002
+#          uri: http://127.0.0.1:8002
+          uri: lb://content-service
           predicates:
             - Path=/content-service/**
+          filters:
+            - StripPrefix=0
       globalcors:
         cors-configurations:
           '[/**]':

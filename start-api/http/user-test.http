@@ -1,5 +1,5 @@
 
-
+PUT http://localhost:8000/user-service/user/update-bonus
 ###
 POST http://localhost:8000/user-service/user/register
 Content-Type: application/json
