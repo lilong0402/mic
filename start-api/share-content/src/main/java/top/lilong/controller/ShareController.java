@@ -6,6 +6,7 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import top.lilong.domain.dto.ExchangeDTO;
+import top.lilong.domain.dto.ShareRequestDTO;
 import top.lilong.domain.entity.Notice;
 import top.lilong.domain.entity.Share;
 import top.lilong.resp.CommonResp;
@@ -93,15 +94,14 @@ public class ShareController {
   commonResp.setData(shareService.exchange(exchangeDTO));
   return commonResp;
  }
-//
-// @PostMapping("/contribute")
-// public int contributeShare(@RequestBody ShareRequestDTO shareRequestDTO,
-//                            @RequestHeader(value = "token", required = false) String token) {
-//  long userId = getUserFromToken(token);
-//  shareRequestDTO.setUserId(userId);
-//  System.out.println(shareRequestDTO);
-//  return shareService.contribute(shareRequestDTO);
-// }
+ @PostMapping("/contribute")
+ public int contributeShare(@RequestBody ShareRequestDTO shareRequestDTO,
+                            @RequestHeader(value = "token", required = false) String token) {
+  long userId = getUserFromToken(token);
+  shareRequestDTO.setUserId(userId);
+  System.out.println(shareRequestDTO);
+  return shareService.contribute(shareRequestDTO);
+ }
 //
 // @GetMapping("/my-contribute")
 // public CommonResp<List<Share>> myContributeShare(

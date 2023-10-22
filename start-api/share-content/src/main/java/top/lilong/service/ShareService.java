@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import top.lilong.domain.dto.ExchangeDTO;
+import top.lilong.domain.dto.ShareRequestDTO;
 import top.lilong.domain.entity.MidUserShare;
 import top.lilong.domain.entity.Share;
 import top.lilong.feign.User;
@@ -15,6 +16,7 @@ import top.lilong.feign.UserService;
 import top.lilong.mapper.MidUserShareMapper;
 import top.lilong.mapper.ShareMapper;
 import top.lilong.resp.CommonResp;
+
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -143,25 +145,25 @@ public class ShareService {
   * @param shareRequestDTO
   * @return
   */
-// public int contribute(ShareRequestDTO shareRequestDTO) {
-//  Share share = Share.builder()
-//          .isOriginal(shareRequestDTO.getIsOriginal())
-//          .author(shareRequestDTO.getAuthor())
-//          .price(shareRequestDTO.getPrice())
-//          .downloadUrl(shareRequestDTO.getDownloadUrl())
-//          .summary(shareRequestDTO.getSummary())
-//          .buyCount(0)
-//          .title(shareRequestDTO.getTitle())
-//          .userId(shareRequestDTO.getUserId())
-//          .cover(shareRequestDTO.getCover())
-//          .createTime(new Date())
-//          .updateTime(new Date())
-//          .showFlag(false)
-//          .auditStatus("NOT_UET")
-//          .reason("未审核")
-//          .build();
-//  return shareMapper.insert(share);
-// }
+ public int contribute(ShareRequestDTO shareRequestDTO) {
+  Share share = Share.builder()
+          .isOriginal(shareRequestDTO.getIsOriginal())
+          .author(shareRequestDTO.getAuthor())
+          .price(shareRequestDTO.getPrice())
+          .downloadUrl(shareRequestDTO.getDownloadUrl())
+          .summary(shareRequestDTO.getSummary())
+          .buyCount(0)
+          .title(shareRequestDTO.getTitle())
+          .userId(shareRequestDTO.getUserId())
+          .cover(shareRequestDTO.getCover())
+          .createTime(new Date())
+          .updateTime(new Date())
+          .showFlag(false)
+          .auditStatus("NOT_UET")
+          .reason("未审核")
+          .build();
+  return shareMapper.insert(share);
+ }
 
  /**
   * 我的投稿
