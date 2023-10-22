@@ -20,27 +20,4 @@ spring:
 logging:
   level:
     top.mqxu.share.user.mapper: debug
-#server:
-#  port: 8000
-#spring:
-#  cloud:
-#    gateway:
-#      routes:
-#        - id: route-user
-#          uri: http://127.0.0.1:8001
-#          predicates:
-#            - Path=/user-service/**
-#        - id: route-content
-#          uri: http://127.0.0.1:8002
-#          predicates:
-#            - Path=/content-service/**
-#  servlet:
-#    context-path: /user-service
-#  datasource:
-#    url: jdbc:mysql://localhost:3306/content-center?characterEncoding=UTF8&autoReconnect=true&serverTimezone=Asia/Shanghai
-#    username: root
-#    password:
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-#logging:
-#  level:
-#    top.mqxu.share.user.mapper: debug
+.mqxu.share.user.mapper: debug
