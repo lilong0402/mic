@@ -6,10 +6,15 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
+import top.lilong.domain.dto.ExchangeDTO;
 import top.lilong.domain.entity.MidUserShare;
 import top.lilong.domain.entity.Share;
+import top.lilong.feign.User;
+import top.lilong.feign.UserAddBonusMsgDTO;
+import top.lilong.feign.UserService;
 import top.lilong.mapper.MidUserShareMapper;
 import top.lilong.mapper.ShareMapper;
+import top.lilong.resp.CommonResp;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,9 +31,9 @@ public class ShareService {
  private ShareMapper shareMapper;
  @Resource
  private MidUserShareMapper midUserMapper;
-//
-// @Resource
-// private UserService userService;
+
+ @Resource
+ private UserService userService;
 //
 // @Resource
 // private RocketMQTemplate rocketMQTemplate;
@@ -86,7 +91,7 @@ public class ShareService {
 
 // public ShareResp findById(Long shareId) {
 //  Share share = shareMapper.selectById(shareId);
-//  CommonResp<User> commonResp =
+//  ComdtomonResp<User> commonResp =
 //          userService.getUser(share.getUserId());
 //  return ShareResp.builder().share(share)
 //          .nickname(commonResp.getData().getNickname())
@@ -94,50 +99,50 @@ public class ShareService {
 //          .build();
 // }
 //
-// public Share exchange(ExchangeDTO exchangeDTO) throws IllegalAccessException {
-//  Long userId = exchangeDTO.getUserId();
-//  Long shareId = exchangeDTO.getShareId();
-//  //1.查询id 根据id 查询share,校验需要兑换的资源是否存在
-//  Share share = shareMapper.selectById(shareId);
-//  if (share == null) {
-//   throw new IllegalAccessException("该分享不存存在");
-//  }
-//
-//  //2.如果当前用户已经兑换该分享，则直接返回该分享(不需要扣积分)
-//  MidUserShare midUserShare = midUserMapper.selectOne(
-//          new QueryWrapper<MidUserShare>().lambda()
-//                  .eq(MidUserShare::getUserId, userId)
-//                  .eq(MidUserShare::getShareId, shareId)
-//  );
-//
-//  if (midUserShare != null) {
-//   return share;
-//  }
-//  //3. 看用户积分是否足够
-//  CommonResp<User> commonResp = userService.getUser(userId);
-//  User user = commonResp.getData();
-//  //看这条资源需要的积分
-//  Integer price = share.getPrice();
-//  if (price > user.getBonus()) {
-//   throw new IllegalAccessException("用户积分不够!");
-//  }
-//  //4.修改积分(+1 就是负值扣分)
-//  userService.updateBonus(UserAddBonusMsgDTO.builder()
-//          .userId(userId)
-//          .bonus(price * -1)
-//          .build());
-//  //5. 向mid_user_share 表中插入一条数据，让这个用户对资源有下载权限
-//  midUserMapper.insert(MidUserShare.builder().userId(userId).shareId(shareId).build());
-//  return share;
-// }
-//
-//
-// /**
-//  * 投稿
-//  *
-//  * @param shareRequestDTO
-//  * @return
-//  */
+ public Share exchange(ExchangeDTO exchangeDTO) throws IllegalAccessException {
+  Long userId = exchangeDTO.getUserId();
+  Long shareId = exchangeDTO.getShareId();
+  //1.查询id 根据id 查询share,校验需要兑换的资源是否存在
+  Share share = shareMapper.selectById(shareId);
+  if (share == null) {
+   throw new IllegalAccessException("该分享不存存在");
+  }
+
+  //2.如果当前用户已经兑换该分享，则直接返回该分享(不需要扣积分)
+  MidUserShare midUserShare = midUserMapper.selectOne(
+          new QueryWrapper<MidUserShare>().lambda()
+                  .eq(MidUserShare::getUserId, userId)
+                  .eq(MidUserShare::getShareId, shareId)
+  );
+
+  if (midUserShare != null) {
+   return share;
+  }
+  //3. 看用户积分是否足够
+  CommonResp<User> commonResp = userService.getUser(userId);
+  User user = commonResp.getData();
+  //看这条资源需要的积分
+  Integer price = share.getPrice();
+  if (price > user.getBonus()) {
+   throw new IllegalAccessException("用户积分不够!");
+  }
+  //4.修改积分(+1 就是负值扣分)
+  userService.updateBonus(UserAddBonusMsgDTO.builder()
+          .userId(userId)
+          .bonus(price * -1)
+          .build());
+  //5. 向mid_user_share 表中插入一条数据，让这个用户对资源有下载权限
+  midUserMapper.insert(MidUserShare.builder().userId(userId).shareId(shareId).build());
+  return share;
+ }
+
+
+ /**
+  * 投稿
+  *
+  * @param shareRequestDTO
+  * @return
+  */
 // public int contribute(ShareRequestDTO shareRequestDTO) {
 //  Share share = Share.builder()
 //          .isOriginal(shareRequestDTO.getIsOriginal())
@@ -157,29 +162,29 @@ public class ShareService {
 //          .build();
 //  return shareMapper.insert(share);
 // }
-//
-// /**
-//  * 我的投稿
-//  *
-//  * @param pageNo
-//  * @param pageSize
-//  * @param userId
-//  * @return
-//  */
-// public List<Share> myContribute(Integer pageNo, Integer pageSize, Long userId) {
-//  LambdaQueryWrapper<Share> wrapper = new LambdaQueryWrapper<>();
-//  wrapper.orderByDesc(Share::getId);
-//  wrapper.eq(Share::getUserId, userId);
-//  Page<Share> page = Page.of(pageNo, pageSize);
-//  return shareMapper.selectList(page, wrapper);
-// }
-//
-//
-// /**
-//  * 查询待审核状态的shares列表
-//  *
-//  * @return
-//  */
+
+ /**
+  * 我的投稿
+  *
+  * @param pageNo
+  * @param pageSize
+  * @param userId
+  * @return
+  */
+ public List<Share> myContribute(Integer pageNo, Integer pageSize, Long userId) {
+  LambdaQueryWrapper<Share> wrapper = new LambdaQueryWrapper<>();
+  wrapper.orderByDesc(Share::getId);
+  wrapper.eq(Share::getUserId, userId);
+  Page<Share> page = Page.of(pageNo, pageSize);
+  return shareMapper.selectList(page, wrapper);
+ }
+
+
+ /**
+  * 查询待审核状态的shares列表
+  *
+  * @return
+  */
 // public List<Share> querySharesNotYet() {
 //  LambdaQueryWrapper<Share> wrapper = new LambdaQueryWrapper<>();
 //  wrapper.orderByDesc(Share::getId);

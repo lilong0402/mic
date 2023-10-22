@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import top.lilong.domain.dto.ExchangeDTO;
 import top.lilong.domain.entity.Notice;
 import top.lilong.domain.entity.Share;
 import top.lilong.resp.CommonResp;
@@ -85,13 +86,13 @@ public class ShareController {
 //  return commonResp;
 // }
 //
-// @PostMapping("/exchange")
-// public CommonResp<Share> exchange(@RequestBody ExchangeDTO exchangeDTO) throws IllegalAccessException {
-//  System.out.println(exchangeDTO);
-//  CommonResp<Share> commonResp = new CommonResp<>();
-//  commonResp.setData(shareService.exchange(exchangeDTO));
-//  return commonResp;
-// }
+ @PostMapping("/exchange")
+ public CommonResp<Share> exchange(@RequestBody ExchangeDTO exchangeDTO) throws IllegalAccessException {
+  System.out.println(exchangeDTO);
+  CommonResp<Share> commonResp = new CommonResp<>();
+  commonResp.setData(shareService.exchange(exchangeDTO));
+  return commonResp;
+ }
 //
 // @PostMapping("/contribute")
 // public int contributeShare(@RequestBody ShareRequestDTO shareRequestDTO,
